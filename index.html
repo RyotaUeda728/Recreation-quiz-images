@@ -238,16 +238,98 @@ const DIFFS = [
 const IMG_BASE =
   "https://raw.githubusercontent.com/RyotaUeda728/Recreation-quiz-images/main/";
 
-// ---- 問題データ(テスト版: 駅当て・簡単め 1問のみ) ----
+// ---- 問題データ ----
+const eki = (base, n = 4) =>
+  Array.from({ length: n }, (_, i) => IMG_BASE + `${base}_${i + 1}.png`);
+
 const QUESTIONS = {
   "駅当て|easy": [
     {
-      id: "eki-e-1",
+      id: "eki-e-shibuya",
       text: "画像の場所は何駅でしょう？",
       type: "text",
-      images: [1, 2, 3, 4].map((n) => IMG_BASE + `Shinjuku_${n}.png`),
+      images: eki("Shibuya"),
+      patterns: ["渋谷", "しぶや", "渋谷駅", "しぶやえき"],
+      answerLabel: "渋谷駅",
+    },
+    {
+      id: "eki-e-ueno",
+      text: "画像の場所は何駅でしょう？",
+      type: "text",
+      images: eki("Ueno"),
+      patterns: ["上野", "うえの", "上野駅", "うえのえき"],
+      answerLabel: "上野駅",
+    },
+    {
+      id: "eki-e-shinjuku",
+      text: "画像の場所は何駅でしょう？",
+      type: "text",
+      images: eki("Shinjuku"),
       patterns: ["新宿", "しんじゅく", "新宿駅", "しんじゅくえき"],
       answerLabel: "新宿駅",
+    },
+    {
+      id: "eki-e-tokyo",
+      text: "画像の場所は何駅でしょう？",
+      type: "text",
+      images: eki("Tokyo"),
+      patterns: ["東京", "とうきょう", "東京駅", "とうきょうえき"],
+      answerLabel: "東京駅",
+    },
+    {
+      id: "eki-e-shinagawa",
+      text: "画像の場所は何駅でしょう？",
+      type: "text",
+      images: eki("shinagawa"),
+      patterns: ["品川", "しながわ", "品川駅", "しながわえき"],
+      answerLabel: "品川駅",
+    },
+  ],
+  "駅当て|hard": [
+    {
+      id: "eki-h-kamata",
+      text: "画像の場所は何駅でしょう？",
+      type: "text",
+      images: eki("kamata"),
+      patterns: ["蒲田", "かまた", "蒲田駅", "かまたえき"],
+      answerLabel: "蒲田駅",
+    },
+    {
+      id: "eki-h-takanawagw",
+      text: "画像の場所は何駅でしょう？",
+      type: "text",
+      images: eki("TakanawaGateway"),
+      patterns: [
+        "高輪ゲートウェイ",
+        "たかなわげーとうぇい",
+        "高輪ゲートウェイ駅",
+        "たかなわげーとうぇいえき",
+      ],
+      answerLabel: "高輪ゲートウェイ駅",
+    },
+    {
+      id: "eki-h-mitaka",
+      text: "画像の場所は何駅でしょう？",
+      type: "text",
+      images: eki("Mitaka"),
+      patterns: ["三鷹", "みたか", "三鷹駅", "みたかえき"],
+      answerLabel: "三鷹駅",
+    },
+    {
+      id: "eki-h-nishihachioji",
+      text: "画像の場所は何駅でしょう？",
+      type: "text",
+      images: eki("Nishihachioji"),
+      patterns: ["西八王子", "にしはちおうじ", "西八王子駅", "にしはちおうじえき"],
+      answerLabel: "西八王子駅",
+    },
+    {
+      id: "eki-h-nakano",
+      text: "画像の場所は何駅でしょう？",
+      type: "text",
+      images: eki("Nakano"),
+      patterns: ["中野", "なかの", "中野駅", "なかのえき"],
+      answerLabel: "中野駅",
     },
   ],
 };
