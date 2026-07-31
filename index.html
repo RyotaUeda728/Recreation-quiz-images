@@ -9,15 +9,15 @@
   @import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
 
   :root{
-    --bg:#0e1420; --bg2:#141c2e; --panel:#1b2540; --line:#2b3960;
-    --text:#eef2ff; --dim:#8d9ab8;
-    --amber:#ffc53d; --teal:#39d0c3; --red:#ff6b7a; --green:#57d98a;
+    --bg:#fbf1e3; --bg2:#f6e7d2; --panel:#fffaf2; --line:#e5d3b8;
+    --text:#33281c; --dim:#8a7a63;
+    --amber:#e08c00; --teal:#0f9d8f; --red:#d94f5c; --green:#2e9e5b;
   }
   *{box-sizing:border-box; margin:0;}
   body{background:var(--bg);}
   .app{
     min-height:100vh;
-    background: radial-gradient(1200px 600px at 50% -10%, #1c2844 0%, var(--bg) 60%);
+    background: radial-gradient(1200px 600px at 50% -10%, #ffe3bd 0%, var(--bg) 60%);
     color:var(--text);
     font-family:'Zen Kaku Gothic New', system-ui, sans-serif;
     display:flex; flex-direction:column;
@@ -30,7 +30,7 @@
 
   /* ---- topbar ---- */
   .topbar{display:flex; align-items:center; gap:12px; padding:10px 16px;
-    border-bottom:1px solid var(--line); background:rgba(10,15,26,.6); flex-wrap:wrap;}
+    border-bottom:1px solid var(--line); background:rgba(255,250,242,.75); flex-wrap:wrap;}
   .tbRole{color:var(--amber); font-size:15px;}
   .tbQ{color:var(--dim); font-size:14px;}
   .tbSpacer{flex:1;}
@@ -39,13 +39,13 @@
     border-radius:8px; padding:5px 10px; font-size:12.5px;}
   .miniBtn:hover:not(:disabled){border-color:var(--amber);}
   .miniBtn.ghost{background:transparent;}
-  .miniBtn.danger{border-color:#5a2b36; color:var(--red);}
+  .miniBtn.danger{border-color:#e8b8bf; color:var(--red);}
   .stage{flex:1; padding:20px; display:flex; flex-direction:column; align-items:center;}
 
   /* ---- role select ---- */
   .roleWrap{max-width:860px; margin:0 auto; padding:48px 20px; text-align:center;}
   .roleTitle{display:flex; flex-direction:column; gap:4px; margin-bottom:8px;}
-  .roleTitle .dotFont{font-size:44px; color:var(--amber); text-shadow:0 0 24px rgba(255,197,61,.35);}
+  .roleTitle .dotFont{font-size:44px; color:var(--amber); text-shadow:0 0 24px rgba(224,140,0,.30);}
   .roleTitle span:last-child{font-size:18px; color:var(--dim);}
   .roleHint{color:var(--dim); font-size:13.5px; margin:10px 0 26px;}
   .roleGrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;}
@@ -64,17 +64,17 @@
   .note.center{text-align:center;}
   .chip{background:var(--panel); border:1px solid var(--line); border-radius:999px;
     padding:3px 12px; font-size:13px;}
-  .chipEasy{color:var(--teal); border-color:#215b56;}
-  .chipHard{color:var(--red); border-color:#5a2b36;}
+  .chipEasy{color:var(--teal); border-color:#9ed4cd;}
+  .chipHard{color:var(--red); border-color:#eab6bd;}
   .qMeta{display:flex; gap:8px; margin-bottom:12px;}
   .qMeta.center{justify-content:center;}
   .textInput{background:var(--bg2); border:1px solid var(--line); border-radius:10px;
     color:var(--text); padding:12px 14px; font-size:16px; font-family:inherit; min-width:200px;}
   .textInput.grow{flex:1;}
-  .bigBtn{background:var(--amber); color:#241a05; border:none; border-radius:10px;
-    padding:12px 22px; font-size:15.5px; font-weight:700; box-shadow:0 3px 0 #b98a1e;}
+  .bigBtn{background:var(--amber); color:#fff8ec; border:none; border-radius:10px;
+    padding:12px 22px; font-size:15.5px; font-weight:700; box-shadow:0 3px 0 #b06e00;}
   .bigBtn:hover:not(:disabled){filter:brightness(1.06);}
-  .bigBtn:active:not(:disabled){transform:translateY(2px); box-shadow:0 1px 0 #b98a1e;}
+  .bigBtn:active:not(:disabled){transform:translateY(2px); box-shadow:0 1px 0 #b06e00;}
 
   /* ---- board ---- */
   .board{display:flex; flex-direction:column; gap:8px; width:100%; max-width:900px;}
@@ -90,9 +90,9 @@
   .boardCell.panel{border:1px solid var(--line); background:var(--panel); min-height:72px;}
   .boardCell.panel.active .dotFont{font-size:30px; color:var(--amber);}
   .boardCell.panel.active:not(:disabled):hover{border-color:var(--amber); transform:translateY(-2px); transition:.12s;}
-  .boardCell.panel.empty{background:#131a2b; border-style:dashed;}
-  .boardCell.panel.done{background:#131a2b; opacity:.6;}
-  .soon{color:#57648a; font-size:12px;}
+  .boardCell.panel.empty{background:#f3e6d0; border-style:dashed;}
+  .boardCell.panel.done{background:#f3e6d0; opacity:.65;}
+  .soon{color:#a8977c; font-size:12px;}
   .remainCnt{font-size:11px; color:var(--dim); margin-top:2px;}
 
   /* ---- host ---- */
@@ -124,7 +124,7 @@
   .monWrap{width:100%; max-width:1100px; display:flex; flex-direction:column; align-items:center; gap:20px;}
   .monWait{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
     gap:14px; min-height:60vh; text-align:center; color:var(--dim);}
-  .monLogo{font-size:72px; color:var(--amber); text-shadow:0 0 40px rgba(255,197,61,.4);
+  .monLogo{font-size:72px; color:var(--amber); text-shadow:0 0 40px rgba(224,140,0,.30);
     animation:pulse 2.4s ease-in-out infinite;}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.72}}
   @media (prefers-reduced-motion: reduce){.monLogo{animation:none}}
@@ -152,8 +152,8 @@
   .sentBadge{color:var(--green); font-size:13.5px;}
   .resultBanner{display:flex; align-items:center; justify-content:center; gap:16px;
     border-radius:14px; padding:18px; font-size:18px; font-weight:700;}
-  .resultBanner.ok{background:rgba(87,217,138,.12); border:1px solid #2b6a45; color:var(--green);}
-  .resultBanner.ng{background:rgba(255,107,122,.10); border:1px solid #5a2b36; color:var(--red);}
+  .resultBanner.ok{background:rgba(46,158,91,.10); border:1px solid #a5d8b8; color:var(--green);}
+  .resultBanner.ng{background:rgba(217,79,92,.08); border:1px solid #e8b8bf; color:var(--red);}
   .resultMark{font-size:26px;}
 
   /* ---- answers / scores ---- */
@@ -162,8 +162,8 @@
   .ansCard{background:var(--panel); border:1px solid var(--line); border-radius:14px;
     padding:16px; display:flex; flex-direction:column; gap:8px; align-items:center; text-align:center;}
   .ansCard.mine{outline:2px solid var(--teal); outline-offset:2px;}
-  .ansCard.ok{border-color:#2b6a45;}
-  .ansCard.ng{border-color:#5a2b36;}
+  .ansCard.ok{border-color:#a5d8b8;}
+  .ansCard.ng{border-color:#e8b8bf;}
   .ansTeam{font-size:13.5px; color:var(--dim); font-weight:700;}
   .ansText{font-size:clamp(16px,2vw,22px); font-weight:700; word-break:break-all;}
   .ansJudge{font-size:20px;}
@@ -178,7 +178,7 @@
   .finalList{display:flex; flex-direction:column; gap:12px; width:100%; max-width:640px;}
   .finalRow{display:flex; align-items:center; gap:16px; background:var(--panel);
     border:1px solid var(--line); border-radius:14px; padding:16px 22px;}
-  .finalRow.rank1{border-color:var(--amber); box-shadow:0 0 24px rgba(255,197,61,.18);
+  .finalRow.rank1{border-color:var(--amber); box-shadow:0 0 24px rgba(224,140,0,.20);
     transform:scale(1.04);}
   .finalRow.mine{outline:2px solid var(--teal); outline-offset:2px;}
   .finalRank{font-size:24px; color:var(--amber); width:64px;}
@@ -186,8 +186,9 @@
   .finalName{flex:1; font-size:18px; font-weight:700;}
   .finalScore{font-size:26px; color:var(--amber);}
 
-  .connErr{background:rgba(255,107,122,.1); border:1px solid #5a2b36; color:var(--red);
+  .connErr{background:rgba(217,79,92,.08); border:1px solid #e8b8bf; color:var(--red);
     border-radius:10px; padding:10px 14px; font-size:13px; margin:10px auto; max-width:720px; text-align:center;}
+  .verTag{position:fixed; left:10px; bottom:8px; font-size:11px; color:#b39c7e; pointer-events:none; z-index:50;}
 
   @media (max-width:680px){
     .boardRow{grid-template-columns:78px repeat(5,1fr);}
@@ -214,6 +215,8 @@
    ============================================================ */
 
 const { useState, useEffect, useRef, useCallback } = React;
+
+const APP_VERSION = "1.1.1";
 
 // ---- Firebase 接続設定 ----
 const firebaseConfig = {
@@ -440,7 +443,7 @@ function QuizApp() {
 
   const startGame = async (totalStr) => {
     const n = parseInt(String(totalStr).trim(), 10);
-    if (!Number.isInteger(n) || n < 1 || n > 99) {
+    if (!Number.isInteger(n) || n < 1 || n > 50) {
       return false;
     }
     return await writeGame({
@@ -725,7 +728,7 @@ function HostSetup({ onStart, busy }) {
   const [err, setErr] = useState("");
   const go = async () => {
     const ok = await onStart(v);
-    setErr(ok ? "" : "問題数は 1〜99 の半角数字で入力してください");
+    setErr(ok ? "" : "問題数は 1〜50 の半角数字で入力してください");
   };
   return (
     <div className="setupBox">
@@ -736,8 +739,8 @@ function HostSetup({ onStart, busy }) {
           className="textInput"
           value={v}
           onChange={(e) => setV(e.target.value)}
-          placeholder="例: 13"
-          onKeyDown={(e) => e.key === "Enter" && go()}
+          placeholder="最大50まで"
+          onKeyDown={(e) => e.key === "Enter" && !e.nativeEvent.isComposing && go()}
         />
         <button className="bigBtn" disabled={busy} onClick={go}>
           この回数でゲーム開始
@@ -944,7 +947,7 @@ function TeamView({ game, phase, teamId }) {
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="回答を入力"
-              onKeyDown={(e) => e.key === "Enter" && submit()}
+              onKeyDown={(e) => e.key === "Enter" && !e.nativeEvent.isComposing && submit()}
             />
             <button className="bigBtn" disabled={sending || !text.trim()} onClick={submit}>
               {sentText ? "修正して再送信" : "回答を送信"}
@@ -1123,7 +1126,12 @@ function FinalBoard({ game, highlight, compact }) {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<QuizApp />);
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.Fragment>
+    <QuizApp />
+    <div className="verTag">v{APP_VERSION}</div>
+  </React.Fragment>
+);
 </script>
 </body>
 </html>
