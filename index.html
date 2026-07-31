@@ -91,7 +91,9 @@
   .boardCell.panel.active .dotFont{font-size:30px; color:var(--amber);}
   .boardCell.panel.active:not(:disabled):hover{border-color:var(--amber); transform:translateY(-2px); transition:.12s;}
   .boardCell.panel.empty{background:#131a2b; border-style:dashed;}
+  .boardCell.panel.done{background:#131a2b; opacity:.6;}
   .soon{color:#57648a; font-size:12px;}
+  .remainCnt{font-size:11px; color:var(--dim); margin-top:2px;}
 
   /* ---- host ---- */
   .hostWrap{width:100%; max-width:960px; display:flex; flex-direction:column; gap:18px;}
@@ -446,7 +448,7 @@ function QuizApp() {
       phase: "select",
       totalQuestions: n,
       qNum: 1,
-      usedCount: {},
+      usedIds: {},
       current: null,
       answers: null,
       judgments: null,
@@ -458,9 +460,10 @@ function QuizApp() {
     const g = gameRef.current;
     const catKey = `${genre}|${diffKey}`;
     const pool = QUESTIONS[catKey] || [];
-    if (pool.length === 0) return;
-    const used = (g.usedCount && g.usedCount[catKey]) || 0;
-    const q = pool[used % pool.length];
+    const used = (g.usedIds && g.usedIds[catKey]) || {};
+    const remaining = pool.filter((q) => !used[q.id]);
+    if (remaining.length === 0) return; // 準備中 or 出題し尽くしたパネルは無反応
+    const q = remaining[Math.floor(Math.random() * remaining.length)];
     const diff = DIFFS.find((d) => d.key === diffKey);
     await writeGame({
       ...g,
@@ -474,7 +477,10 @@ function QuizApp() {
       },
       answers: null,
       judgments: null,
-      usedCount: { ...(g.usedCount || {}), [catKey]: used + 1 },
+      usedIds: {
+        ...(g.usedIds || {}),
+        [catKey]: { ...used, [q.id]: true },
+      },
     });
   };
 
@@ -649,7 +655,7 @@ function HostView(props) {
       {phase === "select" && (
         <React.Fragment>
           <h2 className="secTitle">パネルを選択（口頭で相談 → クリック）</h2>
-          <PanelBoard onPick={props.onPick} clickable />
+          <PanelBoard onPick={props.onPick} clickable usedIds={game.usedIds} />
         </React.Fragment>
       )}
       {phase === "question" && (
@@ -812,7 +818,7 @@ function MonitorView({ game, phase }) {
           <h1 className="monTitle">
             第 {game.qNum} 問 — ジャンルを選ぼう
           </h1>
-          <PanelBoard clickable={false} />
+          <PanelBoard clickable={false} usedIds={game.usedIds} />
           <ScoreStrip game={game} />
         </React.Fragment>
       )}
@@ -988,7 +994,7 @@ function WaitScreen({ main, sub }) {
 
 /* ============ 共通パーツ ============ */
 
-function PanelBoard({ onPick, clickable }) {
+function PanelBoard({ onPick, clickable, usedIds }) {
   return (
     <div className="board">
       <div className="boardRow head">
@@ -1004,15 +1010,34 @@ function PanelBoard({ onPick, clickable }) {
             <span className="diffPts">{fmtPts(d.points)}点</span>
           </div>
           {GENRES.map((g) => {
-            const has = (QUESTIONS[`${g}|${d.key}`] || []).length > 0;
+            const catKey = `${g}|${d.key}`;
+            const pool = QUESTIONS[catKey] || [];
+            const total = pool.length;
+            const used = (usedIds && usedIds[catKey]) || {};
+            const remain = pool.filter((q) => !used[q.id]).length;
+            const isEmpty = total === 0;
+            const isDone = !isEmpty && remain <= 0;
+            const isActive = !isEmpty && !isDone;
             return (
               <button
                 key={g}
-                className={"boardCell panel " + (has ? "active" : "empty")}
-                disabled={!clickable}
-                onClick={() => clickable && has && onPick(g, d.key)}
+                className={
+                  "boardCell panel " +
+                  (isActive ? "active" : isDone ? "done" : "empty")
+                }
+                disabled={!clickable || !isActive}
+                onClick={() => clickable && isActive && onPick(g, d.key)}
               >
-                {has ? <span className="dotFont">？</span> : <span className="soon">準備中</span>}
+                {isEmpty ? (
+                  <span className="soon">準備中</span>
+                ) : isDone ? (
+                  <span className="soon">出題済み</span>
+                ) : (
+                  <React.Fragment>
+                    <span className="dotFont">？</span>
+                    <span className="remainCnt">残り{remain}問</span>
+                  </React.Fragment>
+                )}
               </button>
             );
           })}
