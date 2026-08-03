@@ -189,6 +189,10 @@
   .connErr{background:rgba(217,79,92,.08); border:1px solid #e8b8bf; color:var(--red);
     border-radius:10px; padding:10px 14px; font-size:13px; margin:10px auto; max-width:720px; text-align:center;}
   .verTag{position:fixed; left:10px; bottom:8px; font-size:11px; color:#b39c7e; pointer-events:none; z-index:50;}
+  .fsExit{position:fixed; top:10px; right:10px; z-index:60; background:rgba(255,250,242,.5);
+    border:1px solid var(--line); border-radius:8px; padding:5px 10px; font-size:12px;
+    color:var(--dim); opacity:.25; transition:opacity .15s;}
+  .fsExit:hover{opacity:1;}
 
   @media (max-width:680px){
     .boardRow{grid-template-columns:78px repeat(5,1fr);}
@@ -216,7 +220,7 @@
 
 const { useState, useEffect, useRef, useCallback } = React;
 
-const APP_VERSION = "1.1.1";
+const APP_VERSION = "1.1.2";
 
 // ---- Firebase 接続設定 ----
 const firebaseConfig = {
@@ -383,8 +387,24 @@ function QuizApp() {
   const [busy, setBusy] = useState(false);
   const [lastSync, setLastSync] = useState(null);
   const [connErr, setConnErr] = useState(false);
+  const [isFs, setIsFs] = useState(false);
   const gameRef = useRef(null);
   gameRef.current = game;
+
+  // ---- 全画面状態の監視 ----
+  useEffect(() => {
+    const onFsChange = () => setIsFs(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onFsChange);
+    return () => document.removeEventListener("fullscreenchange", onFsChange);
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  }, []);
 
   // ---- ゲーム状態のリアルタイム購読 ----
   useEffect(() => {
@@ -543,13 +563,22 @@ function QuizApp() {
 
   return (
     <div className="app">
-      <TopBar
-        role={role}
-        game={game}
-        lastSync={lastSync}
-        onRefresh={refresh}
-        onLeave={() => setRole(null)}
-      />
+      {!(isFs && role === "B") && (
+        <TopBar
+          role={role}
+          game={game}
+          lastSync={lastSync}
+          onRefresh={refresh}
+          onLeave={() => setRole(null)}
+          onFullscreen={role === "B" ? toggleFullscreen : null}
+          isFs={isFs}
+        />
+      )}
+      {isFs && role === "B" && (
+        <button className="fsExit" onClick={toggleFullscreen}>
+          ✕ 全画面解除（Escでも可）
+        </button>
+      )}
       {connErr && (
         <p className="connErr">
           サーバーに接続できていません。ネット接続を確認して「↻ 更新」を押してください。
@@ -617,7 +646,7 @@ function RoleSelect({ onPick }) {
 
 /* ============ 共通ヘッダー ============ */
 
-function TopBar({ role, game, lastSync, onRefresh, onLeave }) {
+function TopBar({ role, game, lastSync, onRefresh, onLeave, onFullscreen, isFs }) {
   const label =
     role === "A"
       ? "A・進行役"
@@ -637,6 +666,11 @@ function TopBar({ role, game, lastSync, onRefresh, onLeave }) {
         <span className="tbSync">
           同期 {lastSync.toLocaleTimeString("ja-JP", { hour12: false })}
         </span>
+      )}
+      {onFullscreen && (
+        <button className="miniBtn" onClick={onFullscreen}>
+          {isFs ? "全画面解除" : "⛶ 全画面表示"}
+        </button>
       )}
       <button className="miniBtn" onClick={onRefresh}>
         ↻ 更新
