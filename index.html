@@ -121,7 +121,7 @@
   .hostFooter{display:flex; justify-content:center; gap:10px; margin-top:4px;}
 
   /* ---- monitor ---- */
-  .monWrap{width:100%; max-width:1100px; display:flex; flex-direction:column; align-items:center; gap:20px;}
+  .monWrap{width:100%; display:flex; flex-direction:column; align-items:center; gap:20px;}
   .monWait{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
     gap:14px; min-height:60vh; text-align:center; color:var(--dim);}
   .monLogo{font-size:72px; color:var(--amber); text-shadow:0 0 40px rgba(224,140,0,.30);
@@ -131,9 +131,9 @@
   .waitMain{font-size:22px; color:var(--text); font-weight:700;}
   .waitSub{font-size:14px;}
   .monTitle{font-size:clamp(22px,3.2vw,34px); text-align:center;}
-  .monQ{display:flex; flex-direction:column; align-items:center; gap:16px; width:100%;}
+  .monQ{display:flex; flex-direction:column; align-items:center; gap:10px; width:100%;}
   .monQText{font-size:clamp(22px,3.4vw,36px); text-align:center; font-weight:700;}
-  .monHint{color:var(--dim); font-size:14px;}
+  .monHint{color:var(--dim); font-size:13px; margin-top:2px;}
   .imgGrid{display:grid; gap:10px; width:100%; max-width:1000px;
     grid-template-columns:repeat(2,1fr);}
   .imgGrid.n1{grid-template-columns:1fr; max-width:720px;}
@@ -141,6 +141,9 @@
   .imgGrid.n5{grid-template-columns:repeat(3,1fr);}
   .imgGrid img{width:100%; height:100%; max-height:34vh; object-fit:cover;
     border-radius:12px; border:1px solid var(--line); background:var(--bg2);}
+  .imgGrid.mon{max-width:none;}
+  .imgGrid.mon img{max-height:calc((100vh - 250px) / 2); min-height:200px;}
+  .imgGrid.mon.n1 img,.imgGrid.mon.n3 img{max-height:calc(100vh - 250px);}
   .imgGrid.small{max-width:640px;}
   .imgGrid.small img{max-height:150px;}
 
@@ -220,7 +223,7 @@
 
 const { useState, useEffect, useRef, useCallback } = React;
 
-const APP_VERSION = "1.1.2";
+const APP_VERSION = "1.1.3";
 
 // ---- Firebase 接続設定 ----
 const firebaseConfig = {
@@ -890,7 +893,7 @@ function MonitorQuestion({ game }) {
       </div>
       <h1 className="monQText">{q.text}</h1>
       {q.images && q.images.length > 0 && (
-        <div className={"imgGrid n" + q.images.length}>
+        <div className={"imgGrid mon n" + q.images.length}>
           {q.images.map((src, i) => (
             <img key={i} src={src} alt={"ヒント画像" + (i + 1)} />
           ))}
