@@ -135,6 +135,12 @@
   .waitSub{font-size:14px;}
   .monTitle{font-size:clamp(22px,3.2vw,34px); text-align:center;}
   .monQ{display:flex; flex-direction:column; align-items:center; gap:10px; width:100%;}
+  .monQ.noImg{gap:3vh; padding-top:4vh;}
+  .monQ.noImg .monQText{font-size:clamp(30px,4.5vw,56px); max-width:1400px; line-height:1.4;}
+  .monQ.noImg .monChoices{gap:18px; max-width:1250px;}
+  .monQ.noImg .monChoice{font-size:clamp(18px,2.4vw,32px); padding:24px 26px;}
+  .monQ.noImg .monChoice .choiceLetter{font-size:clamp(22px,2.6vw,34px);}
+  .monQ.noImg .monHint{font-size:16px;}
   .monQText{font-size:clamp(22px,3.4vw,36px); text-align:center; font-weight:700;}
   .monHint{color:var(--dim); font-size:13px; margin-top:2px;}
   .imgGrid{display:grid; gap:10px; width:100%; max-width:1000px;
@@ -233,11 +239,12 @@
   .ansGrid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; width:100%; max-width:980px;}
   .ansGrid.compact{max-width:820px;}
   .ansCard{background:var(--panel); border:1px solid var(--line); border-radius:14px;
-    padding:16px; display:flex; flex-direction:column; gap:8px; align-items:center; text-align:center;}
+    padding:24px 16px; display:flex; flex-direction:column; gap:12px; align-items:center;
+    justify-content:center; text-align:center; min-height:20vh;}
   .ansCard.mine{outline:2px solid var(--teal); outline-offset:2px;}
   .ansCard.ok{border-color:#a5d8b8;}
   .ansCard.ng{border-color:#e8b8bf;}
-  .ansTeam{font-size:13.5px; color:var(--dim); font-weight:700;}
+  .ansTeam{font-size:16px; color:var(--dim); font-weight:700;}
   .ansText{font-size:clamp(20px,2.8vw,34px); font-weight:700; word-break:break-all;}
   .ansJudge{font-size:clamp(30px,4vw,52px); line-height:1.1;}
   .okT{color:var(--green);} .ngT{color:var(--red);}
@@ -297,7 +304,7 @@
 
 const { useState, useEffect, useRef, useCallback } = React;
 
-const APP_VERSION = "1.32.0";
+const APP_VERSION = "1.32.1";
 
 // ---- Firebase 接続設定 ----
 const firebaseConfig = {
@@ -1573,8 +1580,9 @@ function MonitorView({ game, phase }) {
 
 function MonitorQuestion({ game }) {
   const q = game.current;
+  const noImg = (!q.images || q.images.length === 0) && q.type !== "match";
   return (
-    <div className="monQ">
+    <div className={"monQ" + (noImg ? " noImg" : "")}>
       <div className="qMeta center">
         <span className="chip">{q.genre}</span>
         <span className={"chip " + (q.diffKey === "easy" ? "chipEasy" : "chipHard")}>
