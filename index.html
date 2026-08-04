@@ -78,7 +78,7 @@
 
   /* ---- board ---- */
   .board{display:flex; flex-direction:column; gap:8px; width:100%; max-width:900px;}
-  .boardRow{display:grid; grid-template-columns:110px repeat(5,1fr); gap:8px;}
+  .boardRow{display:grid; grid-template-columns:110px repeat(4,1fr); gap:8px;}
   .boardCell{border-radius:10px; min-height:56px; display:flex; flex-direction:column;
     align-items:center; justify-content:center; font-size:14px;}
   .boardCell.corner{background:transparent;}
@@ -119,6 +119,9 @@
   .scoreAdjustItem{display:flex; gap:6px; align-items:center; font-size:13.5px;}
   .scoreAdjustItem b{color:var(--amber); font-size:16px;}
   .hostFooter{display:flex; justify-content:center; gap:10px; margin-top:4px;}
+  .histBox{margin-top:18px; padding-top:14px; border-top:1px dashed var(--line);}
+  .histInfo{font-size:13.5px; font-weight:700;}
+  .histDone{color:var(--green); font-size:12.5px; margin-top:6px;}
 
   /* ---- monitor ---- */
   .monWrap{width:100%; display:flex; flex-direction:column; align-items:center; gap:20px;}
@@ -139,16 +142,29 @@
   .imgGrid.n1{grid-template-columns:1fr; max-width:720px;}
   .imgGrid.n3{grid-template-columns:repeat(3,1fr);}
   .imgGrid.n5{grid-template-columns:repeat(3,1fr);}
-  .imgGrid img{width:100%; height:100%; max-height:34vh; object-fit:cover;
+  .imgGrid img{width:100%; height:100%; max-height:calc(34vh * var(--imgscale,1)); object-fit:cover;
     border-radius:12px; border:1px solid var(--line); background:var(--bg2);}
   .imgGrid.mon{max-width:none;}
-  .imgGrid.mon img{max-height:calc((100vh - 250px) / 2); min-height:200px;}
-  .imgGrid.mon.n1 img,.imgGrid.mon.n3 img{max-height:calc(100vh - 250px);}
-  .imgGrid.small{max-width:640px;}
-  .imgGrid.small img{max-height:150px;}
+  .imgGrid.mon img{max-height:calc((100vh - 250px) / 2 * var(--imgscale,1)); min-height:150px;}
+  .imgGrid.mon.n1 img,.imgGrid.mon.n3 img{max-height:calc((100vh - 250px) * var(--imgscale,1));}
+  .imgGrid.vstack{display:flex; flex-direction:column; align-items:center; gap:10px; max-width:none;}
+  .imgGrid.fitContain{display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:18px;}
+  .imgGrid.vstack.fitContain{flex-direction:column;}
+  .imgGrid.fitContain img{object-fit:contain; width:auto; height:auto; max-width:100%; flex:0 1 auto;}
+  .imgGrid.mon.n2 img{max-height:calc((100vh - 260px) * var(--imgscale,1));}
+  .imgGrid.ansMon{max-width:none; width:100%; justify-items:center;}
+  .imgGrid.ansMon img{width:auto; max-width:100%; object-fit:contain;}
+  .imgGrid.ansMon.n1 img{max-height:calc(62vh * var(--imgscale,1));}
+  .imgGrid.ansMon.n2 img{max-height:calc(52vh * var(--imgscale,1));}
+  .imgGrid.ansMon.n3 img{max-height:calc(42vh * var(--imgscale,1));}
+  .imgGrid.ansMon.n4 img{max-height:calc(38vh * var(--imgscale,1));}
+  .imgGrid.small{max-width:640px; margin:0 auto; align-self:center;}
+  .imgGrid.small.fitContain{max-width:none;}
+  .imgGrid.small.fitContain img{max-height:calc(280px * var(--imgscale,1));}
+  .imgGrid.small img{max-height:calc(150px * var(--imgscale,1));}
 
   /* ---- team ---- */
-  .teamWrap{width:100%; max-width:760px; display:flex; flex-direction:column; gap:14px;}
+  .teamWrap{width:100%; max-width:1100px; display:flex; flex-direction:column; gap:14px;}
   .teamQText{font-size:20px; font-weight:700;}
   .answerBox{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px;
     display:flex; flex-direction:column; gap:10px;}
@@ -157,7 +173,61 @@
     border-radius:14px; padding:18px; font-size:18px; font-weight:700;}
   .resultBanner.ok{background:rgba(46,158,91,.10); border:1px solid #a5d8b8; color:var(--green);}
   .resultBanner.ng{background:rgba(217,79,92,.08); border:1px solid #e8b8bf; color:var(--red);}
-  .resultMark{font-size:26px;}
+  .resultMark{font-size:38px;}
+
+  /* ---- choices ---- */
+  .choiceList{display:flex; flex-direction:column; gap:8px;}
+  .choiceBtn{display:flex; align-items:center; gap:12px; text-align:left;
+    background:var(--bg2); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; font-size:15px; color:var(--text); font-family:inherit;
+    transition:border-color .12s, background .12s;}
+  .choiceBtn:hover:not(:disabled){border-color:var(--amber);}
+  .choiceBtn.sel{background:#fdeacb; border-color:var(--amber); font-weight:700;}
+  .choiceLetter{color:var(--amber); font-size:18px; min-width:22px;}
+  .monChoices{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;
+    width:100%; max-width:1000px;}
+  .monChoice{display:flex; align-items:center; gap:12px; background:var(--panel);
+    border:1px solid var(--line); border-radius:12px; padding:14px 18px;
+    font-size:clamp(15px,1.8vw,22px); font-weight:500;}
+  .monChoice .choiceLetter{font-size:clamp(18px,2vw,26px);}
+  .hostChoices{display:flex; flex-direction:column; gap:4px; align-items:flex-start;
+    background:var(--bg2); border:1px solid var(--line); border-radius:10px; padding:10px 14px;}
+  .hostChoice{font-size:13.5px; color:var(--dim);}
+  .hostChoice.correct{color:var(--green); font-weight:700;}
+
+  .choiceList.imgMode{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+  .choiceList.imgMode .choiceBtn{flex-direction:column; align-items:center; gap:6px;}
+  .choiceImg{max-height:calc(18vh * var(--imgscale,1)); max-width:100%; object-fit:contain; border-radius:8px;}
+  .monChoices.imgMode{grid-template-columns:repeat(4,1fr); max-width:none;}
+  .monChoice.imgMode{flex-direction:column; gap:8px; padding:10px;}
+  .monChoiceImg{max-height:calc(31vh * var(--imgscale,1)); max-width:100%; object-fit:contain; border-radius:8px;}
+  .hostChoices.imgMode{flex-direction:row; flex-wrap:wrap; gap:10px;}
+  .hostChoiceImg{max-height:70px; vertical-align:middle; border-radius:6px; margin:0 4px;}
+
+  /* ---- matching ---- */
+  .matchBoard{width:100%; max-width:900px; display:flex; flex-direction:column;}
+  .matchBoard.big{max-width:1400px;}
+  .matchRow{display:grid; gap:10px;}
+  .matchQuote:disabled,.matchImgCell:disabled{opacity:1;}
+  .matchQuote{display:flex; flex-direction:column; align-items:center; gap:4px;
+    background:var(--panel); border:2px solid var(--line); border-radius:10px;
+    padding:10px 8px; font-size:14px; color:var(--text); font-family:inherit;}
+  .matchBoard.big .matchQuote{font-size:clamp(14px,1.5vw,20px); padding:14px 10px;}
+  .matchQuote.sel{background:#fdeacb; border-color:var(--amber);}
+  .matchQuote:not(:disabled):hover{border-color:var(--amber);}
+  .matchQuoteText{font-weight:700;}
+  .matchNum{color:var(--amber); font-size:16px;}
+  .matchBoard.big .matchNum{font-size:20px;}
+  .matchLines{width:100%; height:64px; display:block;}
+  .matchBoard.big .matchLines{height:90px;}
+  .matchImgCell{display:flex; flex-direction:column; align-items:center; gap:4px;
+    background:var(--panel); border:2px solid var(--line); border-radius:10px; padding:8px;
+    font-family:inherit; color:var(--text);}
+  .matchImgCell:not(:disabled):hover{border-color:var(--amber);}
+  .matchImgCell img{max-width:100%; max-height:calc(15vh * var(--imgscale,1)); object-fit:contain; border-radius:6px;}
+  .matchRightText{font-weight:700; font-size:14px;}
+  .matchBoard.big .matchRightText{font-size:clamp(14px,1.5vw,20px);}
+  .matchBoard.big .matchImgCell img{max-height:calc(24vh * var(--imgscale,1));}
 
   /* ---- answers / scores ---- */
   .ansGrid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; width:100%; max-width:980px;}
@@ -168,8 +238,8 @@
   .ansCard.ok{border-color:#a5d8b8;}
   .ansCard.ng{border-color:#e8b8bf;}
   .ansTeam{font-size:13.5px; color:var(--dim); font-weight:700;}
-  .ansText{font-size:clamp(16px,2vw,22px); font-weight:700; word-break:break-all;}
-  .ansJudge{font-size:20px;}
+  .ansText{font-size:clamp(20px,2.8vw,34px); font-weight:700; word-break:break-all;}
+  .ansJudge{font-size:clamp(30px,4vw,52px); line-height:1.1;}
   .okT{color:var(--green);} .ngT{color:var(--red);}
   .scoreStrip{display:flex; gap:14px; flex-wrap:wrap; justify-content:center;
     background:var(--bg2); border:1px solid var(--line); border-radius:999px; padding:10px 22px;}
@@ -196,9 +266,13 @@
     border:1px solid var(--line); border-radius:8px; padding:5px 10px; font-size:12px;
     color:var(--dim); opacity:.25; transition:opacity .15s;}
   .fsExit:hover{opacity:1;}
+  .fsCtl{position:fixed; top:10px; right:10px; z-index:60; display:flex; gap:6px;}
+  .fsCtl .fsExit{position:static;}
+  .imgScaleCtl{display:flex; align-items:center; gap:4px; font-size:12px; color:var(--dim);}
+  .imgScaleCtl b{color:var(--text); min-width:38px; text-align:center; font-size:12px;}
 
   @media (max-width:680px){
-    .boardRow{grid-template-columns:78px repeat(5,1fr);}
+    .boardRow{grid-template-columns:78px repeat(4,1fr);}
     .statusRow,.ansGrid{grid-template-columns:1fr;}
     .imgGrid{grid-template-columns:repeat(2,1fr);}
   }
@@ -223,7 +297,7 @@
 
 const { useState, useEffect, useRef, useCallback } = React;
 
-const APP_VERSION = "1.1.3";
+const APP_VERSION = "1.32.0";
 
 // ---- Firebase 接続設定 ----
 const firebaseConfig = {
@@ -238,13 +312,14 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const STATE_REF = db.ref("state");
+const HISTORY_REF = db.ref("history");
 const ansRef = (gameId, qNum, teamId) => db.ref(`answers/${gameId}/${qNum}/${teamId}`);
 const ansParentRef = (gameId, qNum) => db.ref(`answers/${gameId}/${qNum}`);
 
-const GENRES = ["大学", "アニメ・映画", "ゲーム", "CG技術", "駅当て"];
+const GENRES = ["アニメ・映画・ゲーム", "CG・一般常識", "東京工科大学", "駅当て"];
 const DIFFS = [
   { key: "easy", label: "簡単め", points: 1 },
-  { key: "hard", label: "難しめ", points: 1.5 },
+  { key: "hard", label: "難しめ", points: 2 },
 ];
 
 const IMG_BASE =
@@ -254,7 +329,463 @@ const IMG_BASE =
 const eki = (base, n = 4) =>
   Array.from({ length: n }, (_, i) => IMG_BASE + `${base}_${i + 1}.png`);
 
+const LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H"];
+
+const CIRCLED = ["①", "②", "③", "④", "⑤", "⑥"];
+const MATCH_COLORS = ["#d94f5c", "#3f7fd6", "#c78f00", "#2e9e5b"];
+
+function arraysEqual(a, b) {
+  return (
+    Array.isArray(a) && Array.isArray(b) &&
+    a.length === b.length && a.every((v, i) => v === b[i])
+  );
+}
+
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// 画像指定は "URL文字列" と {src, h(高さvh)} の両形式に対応
+function imgList(images) {
+  return (images || []).map((e) => (typeof e === "string" ? { src: e } : e));
+}
+
 const QUESTIONS = {
+  "アニメ・映画・ゲーム|easy": [
+    {
+      id: "amg-e-minecraft",
+      text: "マインクラフトの主人公キャラクターの2人は、スティーブと、誰？",
+      type: "text",
+      images: [{ src: IMG_BASE + "2_1_qa.png", h: 50 }],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "2_1_qa.png"],
+      patterns: ["アレックス", "あれっくす", "alex"],
+      answerLabel: "アレックス",
+    },
+    {
+      id: "amg-e-switch",
+      text: "Nintendo Switchの発売日はどれ？",
+      type: "choice",
+      answerImages: [IMG_BASE + "2_3_q.png"],
+      choices: [
+        "2017年 3月3日",
+        "2017年 12月10日",
+        "2018年 3月3日",
+        "2018年 12月10日",
+      ],
+      correctIndex: 0,
+      answerLabel: "A. 2017年 3月3日",
+    },
+    {
+      id: "amg-e-animestudio",
+      text: "次のうち、本社が東京にないアニメーション会社はどれでしょう？",
+      type: "choice",
+      answerImages: [IMG_BASE + "2_6_a1.png", IMG_BASE + "2_6_a2.png"],
+      choices: ["スタジオジブリ", "MAPPA", "ボンズ", "P.A.WORKS"],
+      correctIndex: 3,
+      answerLabel: "D. P.A.WORKS",
+    },
+    {
+      id: "amg-e-movielines",
+      text: "次の映画のワンシーンとセリフを4つ全て結びつけてください",
+      type: "match",
+      matchLeft: [
+        "I'll be back",
+        "I'm the king of the world!",
+        "I am your father",
+        "Here's Johnny!",
+      ],
+      matchRightImages: [
+        IMG_BASE + "2_7_q1.png",
+        IMG_BASE + "2_7_q2.png",
+        IMG_BASE + "2_7_q3.png",
+        IMG_BASE + "2_7_q4.png",
+      ],
+      correctMatches: [2, 0, 3, 1],
+      answerLabel: "A→③ / B→① / C→④ / D→②",
+    },
+    {
+      id: "amg-e-seichi",
+      text: "この写真は何の作品の聖地？作品名を答えてください",
+      type: "text",
+      images: [{ src: IMG_BASE + "2_9_q.jpg", h: 52 }],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "2_9_a.jpg"],
+      patterns: ["君の名は", "きみのなは", "君の名は。", "きみのなは。"],
+      answerLabel: "君の名は。",
+    },
+  ],
+  "アニメ・映画・ゲーム|hard": [
+    {
+      id: "amg-h-nobunaga",
+      text: "ノブナガ＝ハザマは幻影旅団のナンバー何？",
+      type: "text",
+      images: [{ src: IMG_BASE + "2_2_q.png", h: 50 }],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "2_2_a.png"],
+      patterns: ["1", "no.1", "no1", "no,1", "いち", "1ばん", "なんばー1", "なんばーわん"],
+      answerLabel: "No.1",
+    },
+    {
+      id: "amg-h-muska",
+      text: "ムスカ大佐はどこにいるでしょう？？",
+      type: "choice",
+      images: [{ src: IMG_BASE + "2_4_q.png", h: 58, hSmall: 70 }],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "2_4_a1.png", IMG_BASE + "2_4_a2.png"],
+      choices: ["①", "②", "③", "④"],
+      correctIndex: 1,
+      answerLabel: "B. ②",
+    },
+    {
+      id: "amg-h-noitamina",
+      text: "フジテレビの深夜アニメ枠の名称である“ノイタミナ”の名前の由来は何でしょう？",
+      type: "choice",
+      answerImages: [IMG_BASE + "2_5_a.png"],
+      choices: [
+        "とあるゆかりのある場所の地名をもじったもの",
+        "フジテレビ役員の好きなキャラをもじったもの",
+        "“Noita”(フィンランド語で魔術師)と“皆”を合わせたもの",
+        "とある英単語を逆から読んだもの",
+      ],
+      correctIndex: 3,
+      answerLabel: "D. とある英単語を逆から読んだもの（Animation → noitaminA）",
+    },
+    {
+      id: "amg-h-rope",
+      text: "2012年に公開された映画版の 紙兎ロペ では、ストーリー中、夏休みの自由研究のために何の生物を探していた？",
+      type: "choice",
+      answerImages: [IMG_BASE + "2_8_a.png"],
+      choices: ["ツチノコ", "カブトムシ", "とある特徴のある猫", "トンボ"],
+      correctIndex: 0,
+      answerLabel: "A. ツチノコ",
+    },
+    {
+      id: "amg-h-jumpman",
+      text: "任天堂のおなじみキャラ“マリオ”は1981年の『ドンキーコング』にて初登場しましたが、そのときはマリオという名ではありませんでした。この時の名前は何でしょう？",
+      type: "choice",
+      images: [{ src: IMG_BASE + "2_10_q.png", h: 45 }],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "2_10_a.png", IMG_BASE + "2_10_a2.png"],
+      choices: [
+        "ルイージ",
+        "クレイパイプ(土管)マン",
+        "ジャンプマン",
+        "ムンチャクッパス",
+        "スーパーマン",
+        "レッドハットマン",
+      ],
+      correctIndex: 2,
+      answerLabel: "C. ジャンプマン",
+    },
+  ],
+  "CG・一般常識|easy": [
+    {
+      id: "cg-e-countries",
+      text: "この番号の国に当てはまる選択肢を選んでください",
+      type: "choice",
+      images: [{ src: IMG_BASE + "1_2_q.png", h: 52 }],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "1_2_a.png"],
+      choices: [
+        "①ドイツ　②イギリス　③フランス　④スペイン",
+        "①ドイツ　②イギリス　③スペイン　④フランス",
+        "①イギリス　②ドイツ　③フランス　④スペイン",
+        "①イギリス　②ドイツ　③スペイン　④フランス",
+      ],
+      correctIndex: 1,
+      answerLabel: "B. ①ドイツ　②イギリス　③スペイン　④フランス",
+    },
+    {
+      id: "cg-e-ue6",
+      text: "UnrealEngine6から使用されるプログラミング言語の名前と、UE5から無くなるものはなに？",
+      type: "choice",
+      choices: [
+        "Manage　Nanite",
+        "Manage　ブループリント",
+        "Verse　Nanite",
+        "Verse　ブループリント",
+      ],
+      correctIndex: 3,
+      answerLabel: "D. Verse　ブループリント",
+    },
+    {
+      id: "cg-e-tokyo23",
+      text: "23区のうち、数字部分がどこかを当ててください",
+      type: "choice",
+      images: [{ src: IMG_BASE + "1_4_q1.PNG", h: 52 }],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "1_4_a.png"],
+      choices: [
+        "①新宿区　②千代田区　③渋谷区　④港区",
+        "①千代田区　②新宿区　③渋谷区　④港区",
+        "①新宿区　②千代田区　③港区　④渋谷区",
+        "①千代田区　②新宿区　③港区　④渋谷区",
+      ],
+      correctIndex: 0,
+      answerLabel: "A. ①新宿区　②千代田区　③渋谷区　④港区",
+    },
+    {
+      id: "cg-e-takanashi",
+      text: "これ、なんと読む？",
+      type: "text",
+      images: [{ src: IMG_BASE + "1_6_q.png", h: 50 }],
+      imageFit: "contain",
+      patterns: ["たかなし", "小鳥遊"],
+      answerLabel: "たかなし",
+    },
+    {
+      id: "cg-e-tokyoflag",
+      text: "次のうち、東京都の県旗はどれでしょう？",
+      type: "choice",
+      choices: ["", "", "", ""],
+      choiceImageFixed: {
+        0: IMG_BASE + "1_8_q1.png",
+        1: IMG_BASE + "1_8_q2.png",
+        2: IMG_BASE + "1_8_q3.png",
+        3: IMG_BASE + "1_8_q4.png",
+      },
+      choiceImagePool: [],
+      answerImages: [
+        IMG_BASE + "1_8_q1.png",
+        IMG_BASE + "1_8_q2.png",
+        IMG_BASE + "1_8_q3.png",
+        IMG_BASE + "1_8_q4.png",
+      ],
+      correctIndex: 2,
+      answerLabel: "C",
+    },
+  ],
+  "CG・一般常識|hard": [
+    {
+      id: "cg-h-axes",
+      text: "各CGソフトと、XYZ軸の向きをそれぞれ組み合わせてください",
+      type: "match",
+      matchLeft: ["Unity", "UnrealEngine", "blender"],
+      matchRight: [
+        "前-Y 右-X 上+Z",
+        "前+Z 右+X 上+Y",
+        "前+X 右+Y 上+Z",
+      ],
+      correctMatches: [2, 0, 1],
+      answerImages: [IMG_BASE + "1_1_a.png"],
+      answerLabel: "A→③ blender / B→① Unity / C→② UnrealEngine",
+    },
+    {
+      id: "cg-h-countries-asia",
+      text: "この番号の国に当てはまる選択肢を選んでください",
+      type: "choice",
+      images: [{ src: IMG_BASE + "1_3_q.png", h: 52 }],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "1_3_a.png"],
+      choices: [
+        "①タイ　②フィリピン　③インドネシア　④インド",
+        "①フィリピン　②タイ　③インド　④インドネシア",
+        "①インド　②インドネシア　③タイ　④フィリピン",
+        "①インドネシア　②インド　③フィリピン　④タイ",
+      ],
+      correctIndex: 2,
+      answerLabel: "C. ①インド　②インドネシア　③タイ　④フィリピン",
+    },
+    {
+      id: "cg-h-fbx",
+      text: ".fbx拡張子はどのような経緯で作られた？",
+      type: "choice",
+      choices: [
+        "カナダのAlias Research社の、3Dサーフェスモデリングおよびアニメーションツールの「Alias Studio」から",
+        "アメリカのAutodesk社の、モーションキャプチャー機器から取得した人の動きを扱う「MotionBuilder」から",
+        "カナダのSideFX社の、3Dモデリングやアニメーション、特殊効果を制作する「Houdini」から",
+        "カナダのKaydara社の、モーションキャプチャー機器から取得した人の動きを扱う「Filmbox」から",
+      ],
+      correctIndex: 3,
+      answerLabel: "D. カナダのKaydara社の「Filmbox」から",
+    },
+    {
+      id: "cg-h-tokyo23",
+      text: "23区のうち、数字部分がどこかを当ててください",
+      type: "choice",
+      images: [{ src: IMG_BASE + "1_5_q.PNG", h: 52 }],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "1_5_a.png"],
+      choices: [
+        "①杉並区　②荒川区　③葛飾区　④台東区",
+        "①練馬区　②北区　③足立区　④墨田区",
+        "①板橋区　②足立区　③葛飾区　④江戸川区",
+        "①豊島区　②葛飾区　③足立区　④江東区",
+      ],
+      correctIndex: 2,
+      answerLabel: "C. ①板橋区　②足立区　③葛飾区　④江戸川区",
+    },
+    {
+      id: "cg-h-tokoroten",
+      text: "これ、なんと読む？(ヒント:食べ物、5文字)",
+      type: "text",
+      images: [{ src: IMG_BASE + "1_7_q.png", h: 50 }],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "1_7_a.png"],
+      patterns: ["ところてん", "心太", "ところ天"],
+      answerLabel: "ところてん",
+    },
+  ],
+  "東京工科大学|easy": [
+    {
+      id: "univ-e-address",
+      text: "東京工科大学八王子キャンパスの正しい住所は？",
+      type: "choice",
+      choices: [
+        "東京都八王子市片倉1040-1",
+        "東京都八王子市片倉1404-1",
+        "東京都八王子市片倉町1040-1",
+        "東京都八王子市片倉町1404-1",
+      ],
+      correctIndex: 3,
+      answerLabel: "D. 東京都八王子市片倉町1404-1",
+    },
+    {
+      id: "univ-e-obje",
+      text: "このオブジェはどこにある？",
+      type: "choice",
+      images: [
+        { src: IMG_BASE + "4_2_obje.png", h: 56 },
+        { src: IMG_BASE + "4_2_map.PNG", h: 62 },
+      ],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "4_2_objeAnswer.jpg"],
+      choices: ["赤い丸", "青い丸", "黄色い丸", "緑色の丸"],
+      correctIndex: 0,
+      answerLabel: "A. 赤い丸",
+    },
+    {
+      id: "univ-e-rinen",
+      text: "東京工科大学の基本理念として、正しい文はなんでしょう？",
+      type: "choice",
+      images: [{ src: IMG_BASE + "4_4_q.jpg", h: 42 }],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "4_4_answer.jpg"],
+      choices: [
+        "豊かな生活と先進技術の発展を支え、持続可能な未来を築く人材を育てる",
+        "社会に通ずる技術者の育成、人類の社会課題の解決を目指す",
+        "生活の質の向上、技術の発展と持続可能な社会に貢献する人材を育成する",
+        "生活と環境の恒常的な安定と発展、国際社会に通ずる人材を育成する",
+      ],
+      correctIndex: 2,
+      answerLabel: "C. 生活の質の向上、技術の発展と持続可能な社会に貢献する人材を育成する",
+    },
+    {
+      id: "univ-e-alumni",
+      text: "東京工科大学系列出身じゃない人は誰？",
+      type: "choice",
+      choices: [
+        "モンキー・パンチ　ルパン三世シリーズの原作者",
+        "遠藤雅伸　ゲームクリエイター 『ゼビウス』『ドルアーガの塔』など",
+        "牛尾憲輔　別名agraph　『聲の形』『チェンソーマン』などのBGMを手がける",
+        "安原広和　ソニック・ザ・ヘッジホッグのディレクターなど",
+      ],
+      correctIndex: 3,
+      answerLabel: "D. 安原広和",
+    },
+    {
+      id: "univ-e-kogakuin",
+      text: "日本工学院が設置されている東京以外の都道府県はどこ？",
+      type: "choice",
+      answerImages: [
+        IMG_BASE + "4_6_answer.png",
+        IMG_BASE + "4_6_answer2.jpg",
+      ],
+      choices: ["静岡", "愛知", "兵庫", "福岡", "北海道", "沖縄"],
+      correctIndex: 4,
+      answerLabel: "E. 北海道",
+    },
+  ],
+  "東京工科大学|hard": [
+    {
+      id: "univ-h-teiso",
+      text: "東京工科大学八王子キャンパスの定礎はどこにある？",
+      type: "choice",
+      images: [
+        { src: IMG_BASE + "4_1_teiso.jpg", h: 40 },
+        { src: IMG_BASE + "4_1_mapAnswer.PNG", h: 64 },
+      ],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "4_1_teisoAnswer.jpg"],
+      choices: ["赤い丸", "青い丸", "黄色い丸", "緑色の丸"],
+      correctIndex: 2,
+      answerLabel: "C. 黄色い丸",
+    },
+    {
+      id: "univ-h-v",
+      text: "このオブジェはどこにある？",
+      type: "choice",
+      images: [
+        { src: IMG_BASE + "4_3_V.png", h: 56 },
+        { src: IMG_BASE + "4_3_map.PNG", h: 62 },
+      ],
+      imageFit: "contain",
+      answerImages: [IMG_BASE + "4_3_VAnswer.jpg"],
+      choices: ["赤い丸", "青い丸", "黄色い丸", "緑色の丸"],
+      correctIndex: 1,
+      answerLabel: "B. 青い丸",
+    },
+    {
+      id: "univ-h-locations",
+      text: "東京工科大学は映画やドラマ撮影などでもよく使われていますが、選択肢のうち撮影場所として“東京工科大学が使われていない”のはどれ？",
+      type: "choice",
+      answerImages: [
+        IMG_BASE + "4_5_answer1.png",
+        IMG_BASE + "4_5_answer2.jpg",
+        IMG_BASE + "4_5_answer3.jpg",
+      ],
+      choices: [
+        "1994年 ゴジラ",
+        "2011年 家政婦のミタ",
+        "2017年 ドクターX",
+        "1998年 GTO (グレートティーチャー鬼塚)",
+      ],
+      correctIndex: 1,
+      answerLabel: "B. 2011年 家政婦のミタ",
+    },
+    {
+      id: "univ-h-newdept",
+      text: "片柳学園系列で、2027年に新設される学部・学科として“正しくない”ものはどれ？",
+      type: "choice",
+      answerImages: [
+        IMG_BASE + "4_7_a1.png",
+        IMG_BASE + "4_7_a2.png",
+        IMG_BASE + "4_7_a3.png",
+        IMG_BASE + "4_7_a4.png",
+      ],
+      choices: [
+        "サイバーセキュリティ",
+        "デジタルエンターテインメント",
+        "フィギュア造形",
+        "エアポートスタッフ",
+      ],
+      correctIndex: 1,
+      answerLabel: "B. デジタルエンターテインメント",
+    },
+    {
+      id: "univ-h-painting",
+      text: "メディアホール入口横に、とある絵画がありますが、正しい絵画は次のうちどれでしょう？",
+      type: "choice",
+      images: [{ src: IMG_BASE + "4_8_question.JPG", h: 28 }],
+      imageFit: "contain",
+      choices: ["", "", "", ""],
+      choiceImageFixed: { 3: IMG_BASE + "4_8_q1.png" },
+      choiceImagePool: [
+        IMG_BASE + "4_8_q2.jpg",
+        IMG_BASE + "4_8_q3.jpg",
+        IMG_BASE + "4_8_q4.png",
+      ],
+      correctIndex: 3,
+      answerImages: [IMG_BASE + "4_8_answer.jpg"],
+      answerLabel: "D",
+    },
+  ],
   "駅当て|easy": [
     {
       id: "eki-e-shibuya",
@@ -346,6 +877,8 @@ const QUESTIONS = {
   ],
 };
 
+const TOTAL_Q = Object.values(QUESTIONS).reduce((n, pool) => n + pool.length, 0);
+
 const TEAMS = [
   { id: "team1", role: "C", name: "チーム1" },
   { id: "team2", role: "D", name: "チーム2" },
@@ -391,6 +924,7 @@ function QuizApp() {
   const [lastSync, setLastSync] = useState(null);
   const [connErr, setConnErr] = useState(false);
   const [isFs, setIsFs] = useState(false);
+  const [imgScale, setImgScale] = useState(1);
   const gameRef = useRef(null);
   gameRef.current = game;
 
@@ -489,8 +1023,27 @@ function QuizApp() {
     const used = (g.usedIds && g.usedIds[catKey]) || {};
     const remaining = pool.filter((q) => !used[q.id]);
     if (remaining.length === 0) return; // 準備中 or 出題し尽くしたパネルは無反応
-    const q = remaining[Math.floor(Math.random() * remaining.length)];
+    // 過去ゲームで出題済みでない問題を優先(全て出題済みならその中から)
+    const hist = (await readOnce(HISTORY_REF)) || {};
+    const fresh = remaining.filter((q) => !hist[q.id]);
+    const cands = fresh.length > 0 ? fresh : remaining;
+    const q = cands[Math.floor(Math.random() * cands.length)];
+    db.ref("history/" + q.id).set(true).catch(() => {});
     const diff = DIFFS.find((d) => d.key === diffKey);
+    // 画像選択肢: 固定枠以外にプール画像をランダム配置(全画面共通にするためここで確定)
+    let choiceImages = null;
+    if (q.choiceImagePool) {
+      choiceImages = new Array(q.choices.length).fill(null);
+      if (q.choiceImageFixed) {
+        for (const [idx, url] of Object.entries(q.choiceImageFixed)) {
+          choiceImages[Number(idx)] = url;
+        }
+      }
+      const pool = shuffleArr(q.choiceImagePool);
+      for (let i = 0; i < choiceImages.length; i++) {
+        if (choiceImages[i] === null) choiceImages[i] = pool.shift() || null;
+      }
+    }
     await writeGame({
       ...g,
       phase: "question",
@@ -500,6 +1053,7 @@ function QuizApp() {
         diffKey,
         diffLabel: diff.label,
         points: diff.points,
+        choiceImages,
       },
       answers: null,
       judgments: null,
@@ -518,7 +1072,16 @@ function QuizApp() {
     for (const t of TEAMS) {
       const a = all[t.id];
       answers[t.id] = a ? a.text : null;
-      const ok = a ? judge(a.text, g.current.patterns) : false;
+      let ok = false;
+      if (a) {
+        if (g.current.type === "choice") {
+          ok = a.choiceIndex === g.current.correctIndex;
+        } else if (g.current.type === "match") {
+          ok = arraysEqual(a.matches, g.current.correctMatches);
+        } else {
+          ok = judge(a.text, g.current.patterns);
+        }
+      }
       judgments[t.id] = { correct: ok, points: ok ? g.current.points : 0 };
     }
     await writeGame({ ...g, phase: "reveal", answers, judgments });
@@ -558,6 +1121,26 @@ function QuizApp() {
     await writeGame({ gameId: Date.now(), phase: "setup" });
   };
 
+  // 設定画面表示中は出題履歴の件数を取得
+  const [histCount, setHistCount] = useState(null);
+  const inSetup = role === "A" && (!game || game.phase === "setup");
+  useEffect(() => {
+    if (!inSetup) return;
+    let alive = true;
+    (async () => {
+      const h = (await readOnce(HISTORY_REF)) || {};
+      if (alive) setHistCount(Object.keys(h).length);
+    })();
+    return () => { alive = false; };
+  }, [inSetup]);
+
+  const resetHistory = async () => {
+    try {
+      await HISTORY_REF.set(null);
+      setHistCount(0);
+    } catch {}
+  };
+
   /* ---------- 画面 ---------- */
 
   if (!role) return <RoleSelect onPick={setRole} />;
@@ -565,7 +1148,7 @@ function QuizApp() {
   const phase = game ? game.phase : "setup";
 
   return (
-    <div className="app">
+    <div className="app" style={{ "--imgscale": imgScale }}>
       {!(isFs && role === "B") && (
         <TopBar
           role={role}
@@ -575,12 +1158,28 @@ function QuizApp() {
           onLeave={() => setRole(null)}
           onFullscreen={role === "B" ? toggleFullscreen : null}
           isFs={isFs}
+          imgScale={imgScale}
+          setImgScale={setImgScale}
         />
       )}
       {isFs && role === "B" && (
-        <button className="fsExit" onClick={toggleFullscreen}>
-          ✕ 全画面解除（Escでも可）
-        </button>
+        <div className="fsCtl">
+          <button
+            className="fsExit"
+            onClick={() => setImgScale(Math.max(0.5, Math.round((imgScale - 0.1) * 10) / 10))}
+          >
+            画像−
+          </button>
+          <button
+            className="fsExit"
+            onClick={() => setImgScale(Math.min(1.8, Math.round((imgScale + 0.1) * 10) / 10))}
+          >
+            画像＋
+          </button>
+          <button className="fsExit" onClick={toggleFullscreen}>
+            ✕ 全画面解除（Escでも可）
+          </button>
+        </div>
       )}
       {connErr && (
         <p className="connErr">
@@ -594,6 +1193,8 @@ function QuizApp() {
             phase={phase}
             hostAns={hostAns}
             busy={busy}
+            histCount={histCount}
+            onResetHistory={resetHistory}
             onStart={startGame}
             onPick={pickPanel}
             onReveal={revealAnswers}
@@ -649,7 +1250,7 @@ function RoleSelect({ onPick }) {
 
 /* ============ 共通ヘッダー ============ */
 
-function TopBar({ role, game, lastSync, onRefresh, onLeave, onFullscreen, isFs }) {
+function TopBar({ role, game, lastSync, onRefresh, onLeave, onFullscreen, isFs, imgScale, setImgScale }) {
   const label =
     role === "A"
       ? "A・進行役"
@@ -670,6 +1271,22 @@ function TopBar({ role, game, lastSync, onRefresh, onLeave, onFullscreen, isFs }
           同期 {lastSync.toLocaleTimeString("ja-JP", { hour12: false })}
         </span>
       )}
+      <span className="imgScaleCtl">
+        画像
+        <button
+          className="miniBtn"
+          onClick={() => setImgScale(Math.max(0.5, Math.round((imgScale - 0.1) * 10) / 10))}
+        >
+          −
+        </button>
+        <b>{Math.round(imgScale * 100)}%</b>
+        <button
+          className="miniBtn"
+          onClick={() => setImgScale(Math.min(1.8, Math.round((imgScale + 0.1) * 10) / 10))}
+        >
+          ＋
+        </button>
+      </span>
       {onFullscreen && (
         <button className="miniBtn" onClick={onFullscreen}>
           {isFs ? "全画面解除" : "⛶ 全画面表示"}
@@ -691,7 +1308,14 @@ function HostView(props) {
   const { game, phase } = props;
   return (
     <div className="hostWrap">
-      {phase === "setup" && <HostSetup onStart={props.onStart} busy={props.busy} />}
+      {phase === "setup" && (
+        <HostSetup
+          onStart={props.onStart}
+          busy={props.busy}
+          histCount={props.histCount}
+          onResetHistory={props.onResetHistory}
+        />
+      )}
       {phase === "select" && (
         <React.Fragment>
           <h2 className="secTitle">パネルを選択（口頭で相談 → クリック）</h2>
@@ -760,13 +1384,20 @@ function ResetButton({ onReset }) {
   );
 }
 
-function HostSetup({ onStart, busy }) {
-  const [v, setV] = useState("");
+function HostSetup({ onStart, busy, histCount, onResetHistory }) {
+  const [v, setV] = useState("10");
   const [err, setErr] = useState("");
+  const [histArming, setHistArming] = useState(false);
+  const [histMsg, setHistMsg] = useState("");
   const go = async () => {
     const ok = await onStart(v);
     setErr(ok ? "" : "問題数は 1〜50 の半角数字で入力してください");
   };
+  useEffect(() => {
+    if (!histArming) return;
+    const t = setTimeout(() => setHistArming(false), 5000);
+    return () => clearTimeout(t);
+  }, [histArming]);
   return (
     <div className="setupBox">
       <h2 className="secTitle">ゲーム設定</h2>
@@ -787,6 +1418,37 @@ function HostSetup({ onStart, busy }) {
       <p className="note">
         開始すると、モニター(B)と各チーム(C/D/E)の画面が自動で切り替わります。
       </p>
+      <div className="histBox">
+        <p className="histInfo">
+          出題履歴: {histCount === null ? "読み込み中…" : `${histCount} / ${TOTAL_Q} 問が出題済み`}
+        </p>
+        <p className="note">
+          過去のゲームで出た問題は、次のゲームでは後回しになります（未出題の問題が優先で出ます）。
+          全問出し終えたジャンルは、また全問からランダムに出ます。
+        </p>
+        {histArming ? (
+          <div className="setupRow">
+            <button
+              className="miniBtn danger"
+              onClick={() => {
+                setHistArming(false);
+                onResetHistory();
+                setHistMsg("出題履歴をリセットしました。全問が未出題の状態です。");
+              }}
+            >
+              本当にリセットする
+            </button>
+            <button className="miniBtn ghost" onClick={() => setHistArming(false)}>
+              キャンセル
+            </button>
+          </div>
+        ) : (
+          <button className="miniBtn" onClick={() => { setHistArming(true); setHistMsg(""); }}>
+            出題履歴をリセット
+          </button>
+        )}
+        {histMsg && <p className="histDone">{histMsg}</p>}
+      </div>
     </div>
   );
 }
@@ -803,8 +1465,26 @@ function HostQuestion({ game, hostAns, onReveal, busy }) {
         </span>
       </div>
       <p className="hostQText">{q.text}</p>
+      {q.type === "choice" && (
+        <div className={"hostChoices" + (q.choiceImages ? " imgMode" : "")}>
+          {q.choices.map((c, i) => (
+            <span
+              key={i}
+              className={"hostChoice " + (i === q.correctIndex ? "correct" : "")}
+            >
+              {LETTERS[i]}. {q.choiceImages && q.choiceImages[i] ? (
+                <img className="hostChoiceImg" src={q.choiceImages[i]} alt={"選択肢" + LETTERS[i]} />
+              ) : (
+                c
+              )}
+              {i === q.correctIndex ? " ← 正解" : ""}
+            </span>
+          ))}
+        </div>
+      )}
       <p className="hostAnsLabel">
-        正解: <b>{q.answerLabel}</b>（判定パターン: {q.patterns.join(" / ")}）
+        正解: <b>{q.answerLabel}</b>
+        {q.patterns && <span>（判定パターン: {q.patterns.join(" / ")}）</span>}
       </p>
       <div className="statusRow">
         {TEAMS.map((t) => {
@@ -872,6 +1552,16 @@ function MonitorView({ game, phase }) {
       {phase === "judge" && (
         <React.Fragment>
           <h1 className="monTitle">正解は… 「{game.current.answerLabel}」</h1>
+          {game.current.type === "match" && (
+            <MatchBoard q={game.current} matches={game.current.correctMatches} big />
+          )}
+          {game.current.answerImages && game.current.answerImages.length > 0 && (
+            <div className={"imgGrid ansMon n" + game.current.answerImages.length}>
+              {game.current.answerImages.map((src, i) => (
+                <img key={i} src={src} alt={"答え画像" + (i + 1)} />
+              ))}
+            </div>
+          )}
           <AnswerCards game={game} showJudge />
           <ScoreStrip game={game} />
         </React.Fragment>
@@ -893,9 +1583,40 @@ function MonitorQuestion({ game }) {
       </div>
       <h1 className="monQText">{q.text}</h1>
       {q.images && q.images.length > 0 && (
-        <div className={"imgGrid mon n" + q.images.length}>
-          {q.images.map((src, i) => (
-            <img key={i} src={src} alt={"ヒント画像" + (i + 1)} />
+        <div
+          className={
+            "imgGrid mon n" + q.images.length +
+            (q.imageFit === "contain" ? " fitContain" : "") +
+            (q.imageLayout === "column" ? " vstack" : "")
+          }
+          style={
+            q.imageWidths && q.imageFit !== "contain"
+              ? { gridTemplateColumns: q.imageWidths.map((w) => w + "fr").join(" ") }
+              : undefined
+          }
+        >
+          {imgList(q.images).map((e, i) => (
+            <img
+              key={i}
+              src={e.src}
+              alt={"ヒント画像" + (i + 1)}
+              style={e.h ? { maxHeight: `calc(${e.h}vh * var(--imgscale,1))` } : undefined}
+            />
+          ))}
+        </div>
+      )}
+      {q.type === "match" && <MatchBoard q={q} matches={null} big />}
+      {q.type === "choice" && (
+        <div className={"monChoices" + (q.choiceImages ? " imgMode" : "")}>
+          {q.choices.map((c, i) => (
+            <div key={i} className={"monChoice" + (q.choiceImages ? " imgMode" : "")}>
+              <span className="choiceLetter dotFont">{LETTERS[i]}</span>
+              {q.choiceImages && q.choiceImages[i] ? (
+                <img className="monChoiceImg" src={q.choiceImages[i]} alt={"選択肢" + LETTERS[i]} />
+              ) : (
+                <span>{c}</span>
+              )}
+            </div>
           ))}
         </div>
       )}
@@ -909,6 +1630,7 @@ function MonitorQuestion({ game }) {
 function TeamView({ game, phase, teamId }) {
   const team = TEAMS.find((t) => t.id === teamId);
   const [text, setText] = useState("");
+  const [selIdx, setSelIdx] = useState(null);
   const [sentText, setSentText] = useState(null);
   const [sending, setSending] = useState(false);
   const [sendErr, setSendErr] = useState("");
@@ -920,6 +1642,7 @@ function TeamView({ game, phase, teamId }) {
       if (qKeyRef.current !== k) {
         qKeyRef.current = k;
         setText("");
+        setSelIdx(null);
         setSentText(null);
         setSendErr("");
       }
@@ -927,14 +1650,20 @@ function TeamView({ game, phase, teamId }) {
   }, [game, phase]);
 
   const submit = async () => {
-    if (!text.trim()) return;
+    const q = game.current;
+    const isChoice = q.type === "choice";
+    if (isChoice ? selIdx === null : !text.trim()) return;
+    const display = isChoice
+      ? q.choices[selIdx]
+        ? `${LETTERS[selIdx]}. ${q.choices[selIdx]}`
+        : LETTERS[selIdx]
+      : text.trim();
     setSending(true);
     try {
-      await ansRef(game.gameId, game.qNum, teamId).set({
-        text: text.trim(),
-        submittedAt: Date.now(),
-      });
-      setSentText(text.trim());
+      const payload = { text: display, submittedAt: Date.now() };
+      if (isChoice) payload.choiceIndex = selIdx;
+      await ansRef(game.gameId, game.qNum, teamId).set(payload);
+      setSentText(display);
       setSendErr("");
     } catch {
       setSendErr("送信に失敗しました。「回答を送信」をもう一度押してください。");
@@ -965,12 +1694,37 @@ function TeamView({ game, phase, teamId }) {
         </div>
         <h2 className="teamQText">{q.text}</h2>
         {q.images && q.images.length > 0 && (
-          <div className="imgGrid small">
-            {q.images.map((src, i) => (
-              <img key={i} src={src} alt={"ヒント画像" + (i + 1)} />
+          <div
+            className={
+              "imgGrid small" +
+              (q.imageFit === "contain" ? " fitContain" : "") +
+              (q.imageLayout === "column" ? " vstack" : "")
+            }
+            style={
+              q.imageWidths && q.imageFit !== "contain"
+                ? { gridTemplateColumns: q.imageWidths.map((w) => w + "fr").join(" ") }
+                : undefined
+            }
+          >
+            {imgList(q.images).map((e, i) => (
+              <img
+                key={i}
+                src={e.src}
+                alt={"ヒント画像" + (i + 1)}
+                style={
+                  e.hSmall
+                    ? { maxHeight: `calc(${e.hSmall}vh * var(--imgscale,1))` }
+                    : e.h
+                    ? { maxHeight: `calc(${Math.round(e.h * 0.62)}vh * var(--imgscale,1))` }
+                    : undefined
+                }
+              />
             ))}
           </div>
         )}
+        {q.type === "match" ? (
+          <MatchAnswerBox key={game.gameId + "_" + game.qNum} game={game} teamId={teamId} />
+        ) : (
         <div className="answerBox">
           {sendErr && <p className="errText">{sendErr}</p>}
           {sentText && (
@@ -978,19 +1732,48 @@ function TeamView({ game, phase, teamId }) {
               ✓ 回答を送信しました: 「{sentText}」（締め切り前なら修正して再送信できます）
             </p>
           )}
-          <div className="setupRow">
-            <input
-              className="textInput grow"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="回答を入力"
-              onKeyDown={(e) => e.key === "Enter" && !e.nativeEvent.isComposing && submit()}
-            />
-            <button className="bigBtn" disabled={sending || !text.trim()} onClick={submit}>
-              {sentText ? "修正して再送信" : "回答を送信"}
-            </button>
-          </div>
+          {q.type === "choice" ? (
+            <React.Fragment>
+              <div className={"choiceList" + (q.choiceImages ? " imgMode" : "")}>
+                {q.choices.map((c, i) => (
+                  <button
+                    key={i}
+                    className={"choiceBtn " + (selIdx === i ? "sel" : "")}
+                    onClick={() => setSelIdx(i)}
+                  >
+                    <span className="choiceLetter dotFont">{LETTERS[i]}</span>
+                    {q.choiceImages && q.choiceImages[i] ? (
+                      <img className="choiceImg" src={q.choiceImages[i]} alt={"選択肢" + LETTERS[i]} />
+                    ) : (
+                      <span>{c}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+              <button
+                className="bigBtn"
+                disabled={sending || selIdx === null}
+                onClick={submit}
+              >
+                {sentText ? "修正して再送信" : "この回答を送信"}
+              </button>
+            </React.Fragment>
+          ) : (
+            <div className="setupRow">
+              <input
+                className="textInput grow"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="回答を入力"
+                onKeyDown={(e) => e.key === "Enter" && !e.nativeEvent.isComposing && submit()}
+              />
+              <button className="bigBtn" disabled={sending || !text.trim()} onClick={submit}>
+                {sentText ? "修正して再送信" : "回答を送信"}
+              </button>
+            </div>
+          )}
         </div>
+        )}
       </div>
     );
   }
@@ -1020,6 +1803,155 @@ function TeamView({ game, phase, teamId }) {
 
   if (phase === "final") return <FinalBoard game={game} highlight={teamId} />;
   return null;
+}
+
+/* ============ マッチング形式 ============ */
+
+// 盤面表示: 上=セリフ群(①〜) 中=接続線 下=画像群(A〜)
+function MatchBoard({ q, matches, big, selQuote, onQuote, onImage }) {
+  const nL = q.matchLeft.length;
+  const rights = q.matchRightImages || q.matchRight;
+  const nR = rights.length;
+  const cxL = (i) => ((i + 0.5) / nL) * 400;
+  const cxR = (i) => ((i + 0.5) / nR) * 400;
+  return (
+    <div className={"matchBoard " + (big ? "big" : "")}>
+      <div className="matchRow" style={{ gridTemplateColumns: `repeat(${nL},1fr)` }}>
+        {q.matchLeft.map((t, i) => {
+          const pairedImg = matches ? matches.indexOf(i) : -1;
+          return (
+            <button
+              key={i}
+              className={
+                "matchQuote " +
+                (selQuote === i ? "sel " : "") +
+                (pairedImg >= 0 ? "paired" : "")
+              }
+              style={pairedImg >= 0 ? { borderColor: MATCH_COLORS[pairedImg] } : undefined}
+              disabled={!onQuote}
+              onClick={() => onQuote && onQuote(i)}
+            >
+              <span className="matchNum dotFont">{CIRCLED[i]}</span>
+              <span className="matchQuoteText">{t}</span>
+            </button>
+          );
+        })}
+      </div>
+      <svg
+        className="matchLines"
+        viewBox="0 0 400 100"
+        preserveAspectRatio="none"
+      >
+        {matches &&
+          matches.map((qi, imgI) =>
+            qi === null || qi === undefined ? null : (
+              <line
+                key={imgI}
+                x1={cxL(qi)}
+                y1="0"
+                x2={cxR(imgI)}
+                y2="100"
+                stroke={MATCH_COLORS[imgI]}
+                strokeWidth="4"
+              />
+            )
+          )}
+      </svg>
+      <div className="matchRow" style={{ gridTemplateColumns: `repeat(${nR},1fr)` }}>
+        {rights.map((src, i) => (
+          <button
+            key={i}
+            className={
+              "matchImgCell " +
+              (matches && matches[i] !== null && matches[i] !== undefined ? "paired" : "")
+            }
+            style={
+              matches && matches[i] !== null && matches[i] !== undefined
+                ? { borderColor: MATCH_COLORS[i] }
+                : undefined
+            }
+            disabled={!onImage}
+            onClick={() => onImage && onImage(i)}
+          >
+            <span className="matchNum dotFont">{LETTERS[i]}</span>
+            {q.matchRightImages ? (
+              <img src={src} alt={"項目" + LETTERS[i]} />
+            ) : (
+              <span className="matchRightText">{src}</span>
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// チームの回答UI: ①を押してからAを押すと線がつながる
+function MatchAnswerBox({ game, teamId }) {
+  const q = game.current;
+  const n = q.matchLeft.length;
+  const nR = (q.matchRightImages || q.matchRight).length;
+  const [matches, setMatches] = useState(Array(nR).fill(null));
+  const [selQuote, setSelQuote] = useState(null);
+  const [sentText, setSentText] = useState(null);
+  const [sending, setSending] = useState(false);
+  const [sendErr, setSendErr] = useState("");
+
+  const onQuote = (i) => setSelQuote(selQuote === i ? null : i);
+  const onImage = (imgI) => {
+    if (selQuote === null) {
+      // セリフ未選択で画像を押したら、その画像の線を外す
+      setMatches((m) => m.map((v, idx) => (idx === imgI ? null : v)));
+      return;
+    }
+    setMatches((m) =>
+      m.map((v, idx) =>
+        idx === imgI ? selQuote : v === selQuote ? null : v
+      )
+    );
+    setSelQuote(null);
+  };
+
+  const allDone = matches.every((v) => v !== null);
+  const display = matches
+    .map((qi, i) => `${LETTERS[i]}→${qi === null ? "?" : CIRCLED[qi]}`)
+    .join(" ");
+
+  const submit = async () => {
+    if (!allDone) return;
+    setSending(true);
+    try {
+      await ansRef(game.gameId, game.qNum, teamId).set({
+        text: display,
+        matches,
+        submittedAt: Date.now(),
+      });
+      setSentText(display);
+      setSendErr("");
+    } catch {
+      setSendErr("送信に失敗しました。「回答を送信」をもう一度押してください。");
+    }
+    setSending(false);
+  };
+
+  return (
+    <div className="answerBox">
+      {sendErr && <p className="errText">{sendErr}</p>}
+      {sentText && (
+        <p className="sentBadge">
+          ✓ 回答を送信しました: {sentText}（締め切り前なら修正して再送信できます）
+        </p>
+      )}
+      <p className="note">
+        上の項目(①〜{CIRCLED[n - 1]})を押してから、下の項目(A〜{LETTERS[nR - 1]})を押すと線がつながります。
+        下の項目だけを押すとその線を消せます。
+      </p>
+      <MatchBoard q={q} matches={matches} selQuote={selQuote} onQuote={onQuote} onImage={onImage} />
+      <button className="bigBtn" disabled={sending || !allDone} onClick={submit}>
+        {sentText ? "修正して再送信" : allDone ? "この組み合わせで送信" : "4つ全てつなげてください"}
+      </button>
+    </div>
+  );
 }
 
 function WaitScreen({ main, sub }) {
